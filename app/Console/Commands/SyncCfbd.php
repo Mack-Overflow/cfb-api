@@ -41,11 +41,11 @@ class SyncCfbd extends Command
         
             return $conference && in_array($conference, $fbs_fcs_conferences, true);
         })->values();
-        $logos = collect($cfbd->logos())->keyBy(fn($t)=>$t['school'] ?? $t['team'] ?? '');
+        // $logos = collect($cfbd->logos())->keyBy(fn($t)=>$t['school'] ?? $t['team'] ?? '');
       
-        $fbsTeams->each(function($t) use ($logos){
+        $fbsTeams->each(function($t) {
           $school = $t['school'];
-          $logo = optional($logos->get($school))['logos'][0] ?? null;
+        //   $logo = optional($logos->get($school))['logos'][0] ?? null;
           \App\Models\Team::updateOrCreate(
             ['cfbd_id' => (string)($t['id'] ?? $school)], // fallback to school key
             [
@@ -53,7 +53,7 @@ class SyncCfbd extends Command
               'mascot' => $t['mascot'] ?? null,
               'abbreviation' => $t['abbreviation'] ?? null,
               'conference' => $t['conference'] ?? null,
-              'logo' => $logo,
+            //   'logo' => $logo,
             ]
           );
         });
